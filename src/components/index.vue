@@ -1,11 +1,18 @@
 <template>
     <div class="container">
-        <div class="feed">
-            <div class="feed-title">
-                Tech Crunch
+        <div class="feed" v-for="feed in feeds" v-bind:key="feed.id">
+            <div class="feed--title">
+                {{feed.title}}
             </div>
-            <div class="play-button" v-on:click="SpeakVoice('https://jp.techcrunch.com/feed/')">
+            <div class="feed--play-button"
+                 v-on:click="SpeakVoice(feed.rss)"
+            >
                 再生
+            </div>
+            <div class="feed--stop-button"
+                 v-on:click="StopVoice"
+            >
+                停止
             </div>
         </div>
     </div>
@@ -17,6 +24,14 @@ const rssParser = new RssParser();
 
 export default {
     name: "index",
+    data: function(){
+        return{
+            feeds: [
+                {title: 'techcrunch', rss: 'https://jp.techcrunch.com/feed/'},
+                {title: '東京都', rss: 'https://www.metro.tokyo.lg.jp/rss/index.rdf'}
+            ]
+        }
+    },
     methods: {
         RssToJson : async function(url){
             const feed = await rssParser.parseURL(url);
@@ -25,10 +40,12 @@ export default {
         SpeakVoice : async function(url){
             const feed = await this.RssToJson(url);
             feed.items.map(function(item){
-                console.log(item)
                 const uttr = new SpeechSynthesisUtterance(item.title);
                 speechSynthesis.speak(uttr);
             })
+        },
+        StopVoice : function(){
+            speechSynthesis.cancel();
         }
     }
 }
@@ -37,6 +54,40 @@ export default {
 //ここを開く->  "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" --disable-web-security --user-data-dir="C://Chrome dev session
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+.container{
+    margin: 5% 10% 0 10%;
+    border: solid 3px black;
+}
+
+.feed{
+    display: flex;
+    padding: 1rem;
+    border-bottom: solid 1px gray;
+    &--title{
+        flex-basis: 60%;
+        text-align: center;
+        font-size: 2rem;
+    }
+    &--play-button{
+        flex-basis: 20%;
+        background: #e14500;
+        border-radius: 5px;
+        color: white;
+        font-size: 1.5rem;
+        text-align: center;
+        cursor: pointer;
+    }
+    &--stop-button{
+        flex-basis: 20%;
+        background: gray;
+        border-radius: 5px;
+        color: white;
+        font-size: 1.5rem;
+        text-align: center;
+        cursor: pointer;
+    }
+
+}
 
 </style>
