@@ -19,18 +19,22 @@ export default {
     name: "index",
     methods: {
         RssToJson : async function(url){
-            console.log("RSS TO JSON")
             const feed = await rssParser.parseURL(url);
-            console.log(feed.title);
+            return feed;
         },
         SpeakVoice : async function(url){
-            const text = await this.RssToJson(url);
-            console.log("text",text);
-            const uttr = new SpeechSynthesisUtterance(text);
-            speechSynthesis.speak(uttr);
+            const feed = await this.RssToJson(url);
+            feed.items.map(function(item){
+                console.log(item)
+                const uttr = new SpeechSynthesisUtterance(item.title);
+                speechSynthesis.speak(uttr);
+            })
         }
     }
 }
+
+
+//ここを開く->  "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" --disable-web-security --user-data-dir="C://Chrome dev session
 </script>
 
 <style scoped>
