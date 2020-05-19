@@ -20,9 +20,10 @@
 
 
 <script>
-import axios from 'axios';
+// import axios from 'axios';
+import firebase from 'firebase';
 
-const parser = new DOMParser();
+//const parser = new DOMParser();
 
 export default {
     name: "index",
@@ -41,15 +42,10 @@ export default {
 
     methods: {
         RssToJson : async function(url){
-            await axios.get(url)
-                .then((res)=>{
-                    const feed =  parser.parseFromString(res.data,'text/xml');
-                    console.log(feed);
-                    return feed;
-                })
-            // console.log(rss);
-            // const feed = await rssParser.parseURL(rss);
-            // return feed;
+            const fetchRSS = firebase.functions().httpsCallable('fetchRSS');
+            fetchRSS({rss : url}).then((res)=>{
+                console.log(res)
+            })
         },
         SpeakVoice : async function(url){
             const feed = await this.RssToJson(url);
