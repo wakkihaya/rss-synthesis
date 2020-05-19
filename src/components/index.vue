@@ -18,24 +18,38 @@
     </div>
 </template>
 
+
 <script>
-import RssParser from 'rss-parser';
-const rssParser = new RssParser();
+import axios from 'axios';
+
+const parser = new DOMParser();
 
 export default {
     name: "index",
     data: function(){
         return{
+            header: {
+                'Content-Type': 'application/json;charset=UTF-8',
+                'Access-Control-Allow-Origin': '*',
+            },
             feeds: [
                 {title: 'techcrunch', rss: 'https://jp.techcrunch.com/feed/'},
                 {title: '東京都', rss: 'https://www.metro.tokyo.lg.jp/rss/index.rdf'}
             ]
         }
     },
+
     methods: {
         RssToJson : async function(url){
-            const feed = await rssParser.parseURL(url);
-            return feed;
+            await axios.get(url)
+                .then((res)=>{
+                    const feed =  parser.parseFromString(res.data,'text/xml');
+                    console.log(feed);
+                    return feed;
+                })
+            // console.log(rss);
+            // const feed = await rssParser.parseURL(rss);
+            // return feed;
         },
         SpeakVoice : async function(url){
             const feed = await this.RssToJson(url);
