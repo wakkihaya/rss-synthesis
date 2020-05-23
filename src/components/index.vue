@@ -5,7 +5,7 @@
                 {{feed.title}}
             </div>
             <div class="feed--play-button"
-                 v-on:click="SpeakVoice(feed.rss)"
+                 v-on:click="fetchFeed(feed.rss)"
             >
                 再生
             </div>
@@ -20,10 +20,11 @@
 
 
 <script>
-// import axios from 'axios';
 import firebase from 'firebase';
+import RssParser from 'rss-parser'
+const rssParser = new RssParser();
+const host = 'https://us-central1-rss-synthesis.cloudfunctions.net';
 
-//const parser = new DOMParser();
 
 export default {
     name: "index",
@@ -53,6 +54,10 @@ export default {
                 const uttr = new SpeechSynthesisUtterance(item.title);
                 speechSynthesis.speak(uttr);
             })
+        },
+        fetchFeed : async function(url){
+            const feed = await rssParser.parseURL(`${host}/RssProxy?url=${url}`);
+            speechSynthesis.speak(feed);
         },
         StopVoice : function(){
             speechSynthesis.cancel();

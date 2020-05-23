@@ -10,6 +10,8 @@
   "dependencies": {
     "axios": "^0.19.2",
     "core-js": "^3.6.4",
+    "cors": "^2.8.5",
+    "jschardet": "^2.1.1",
     "rss-parser": "^3.8.0",
     "vue": "^2.6.11"
   },
