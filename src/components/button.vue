@@ -31,50 +31,49 @@
 
 <script>
 import RssParser from 'rss-parser'
+
 const rssParser = new RssParser();
 const host = 'https://us-central1-rss-synthesis.cloudfunctions.net';
 
 export default {
     name: "button",
     props: ['feed'],
-    data: function(){
-        return{
-            contents: [
-
-            ],
+    data: function () {
+        return {
+            contents: [],
             isPlayOn: true,
             isPauseOn: false,
             isResumeOn: false,
         }
     },
     methods: {
-        fetchFeed : async function(url){
+        fetchFeed: async function (url) {
             let self = this;
             const feed = await rssParser.parseURL(`${host}/RssProxy?url=${url}`);
-            feed.items.map(function(item){
+            feed.items.map(function (item) {
                 self.contents.push(item.title);
             });
         },
-        PlayVoice: async function(url){
+        PlayVoice: async function (url) {
             await this.fetchFeed(url);
-            this.contents.forEach((item)=>{
+            this.contents.forEach((item) => {
                 const uttr = new SpeechSynthesisUtterance(item);
                 speechSynthesis.speak(uttr);
             });
             this.isPlayOn = false;
             this.isPauseOn = true;
         },
-        PauseVoice: function(){
+        PauseVoice: function () {
             speechSynthesis.pause();
             this.isPauseOn = false;
             this.isResumeOn = true;
         },
-        ResumeVoice: function(){
+        ResumeVoice: function () {
             speechSynthesis.resume();
             this.isPauseOn = true;
             this.isResumeOn = false;
         },
-        StopVoice : function(){
+        StopVoice: function () {
             speechSynthesis.cancel();
             this.isPlayOn = true;
             this.isPauseOn = false;
@@ -85,16 +84,18 @@ export default {
 </script>
 
 <style scoped lang="scss">
-    .feed{
+    .feed {
         display: flex;
         padding: 1rem;
         border-bottom: solid 1px gray;
-        &--title{
+
+        &--title {
             flex-basis: 60%;
             text-align: center;
             font-size: 2rem;
         }
-        &--action-button{
+
+        &--action-button {
             flex-basis: 20%;
             background: #e14500;
             border-radius: 5px;
@@ -103,7 +104,8 @@ export default {
             text-align: center;
             cursor: pointer;
         }
-        &--stop-button{
+
+        &--stop-button {
             flex-basis: 20%;
             background: gray;
             border-radius: 5px;

@@ -12,11 +12,11 @@ import Button from './button.vue';
 
 export default {
     name: "index",
-    components : {
-      Button
+    components: {
+        Button
     },
-    data: function(){
-        return{
+    data: function () {
+        return {
             header: {
                 'Content-Type': 'application/json;charset=UTF-8',
                 'Access-Control-Allow-Origin': '*',
@@ -27,7 +27,6 @@ export default {
             ],
         }
     },
-
 }
 
 
@@ -35,9 +34,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
-.container{
-    margin: 5% 10% 0 10%;
-    border: solid 3px black;
-}
+    .container {
+        margin: 5% 10% 0 10%;
+        border: solid 3px black;
+    }
 
 </style>
