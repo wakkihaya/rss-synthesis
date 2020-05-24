@@ -22,8 +22,9 @@ export default {
                 'Access-Control-Allow-Origin': '*',
             },
             feeds: [
-                {title: 'techcrunch', rss: 'https://jp.techcrunch.com/feed/'},
-                {title: '東京都', rss: 'https://www.metro.tokyo.lg.jp/rss/index.rdf'}
+                {title: 'TechCrunch', rss: 'https://jp.techcrunch.com/feed/'},
+                {title: 'Yahooニュース IT',rss: 'https://news.yahoo.co.jp/pickup/computer/rss.xml'},
+                {title: 'NHK 経済ニュース',rss: 'https://www.nhk.or.jp/rss/news/cat5.xml' },
             ],
         }
     },
