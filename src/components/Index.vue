@@ -1,7 +1,12 @@
 <template>
-    <div class="container">
-        <div v-for="feed in feeds" v-bind:key="feed.id">
-            <Button :feed="feed"></Button>
+    <div>
+        <div class="description">
+            RSS Feedcastでは、下記にあるニュースサイトの最新情報を耳で収集できます。
+        </div>
+        <div class="feed-container">
+            <div class="feed-list" v-for="feed in feeds" v-bind:key="feed.id">
+                <Button :feed="feed"></Button>
+            </div>
         </div>
     </div>
 </template>
@@ -22,9 +27,13 @@ export default {
                 'Access-Control-Allow-Origin': '*',
             },
             feeds: [
-                {title: 'TechCrunch', rss: 'https://jp.techcrunch.com/feed/'},
-                {title: 'Yahooニュース IT',rss: 'https://news.yahoo.co.jp/pickup/computer/rss.xml'},
-                {title: 'NHK 経済ニュース',rss: 'https://www.nhk.or.jp/rss/news/cat5.xml' },
+                {title: 'TechCrunch', rss: 'https://jp.techcrunch.com/feed/', url: 'https://jp.techcrunch.com'},
+                {
+                    title: 'Yahooニュース IT',
+                    rss: 'https://news.yahoo.co.jp/pickup/computer/rss.xml',
+                    url: 'https://news.yahoo.co.jp/categories/it'
+                },
+                {title: 'NHK 経済ニュース', rss: 'https://www.nhk.or.jp/rss/news/cat5.xml', url: 'https://www.nhk.or.jp/'},
             ],
         }
     },
@@ -33,9 +42,20 @@ export default {
 </script>
 
 <style scoped lang="scss">
-    .container {
+    .feed-container {
         margin: 5% 10% 0 10%;
         border: solid 3px black;
+    }
+
+    .description {
+        padding: 5% 0 0 10%;
+        font-size: 1.5rem;
+
+    }
+
+    .feed-list {
+        border-bottom: solid 1px gray;
+        height: 100px;
     }
 
 </style>
