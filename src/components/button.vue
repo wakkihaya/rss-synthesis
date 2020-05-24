@@ -55,9 +55,12 @@ export default {
             });
         },
         PlayVoice: async function (url) {
+            speechSynthesis.cancel();
             await this.fetchFeed(url);
             this.contents.forEach((item) => {
                 const uttr = new SpeechSynthesisUtterance(item);
+                uttr.lang = 'ja-JP';
+                uttr.rate = 1.0;
                 speechSynthesis.speak(uttr);
             });
             this.isPlayOn = false;
