@@ -1,9 +1,7 @@
 const axios = require('axios');
 const iconv = require('iconv-lite');
 const jschardet = require('jschardet');
-const Cors = require('cors');
-const cors = Cors({ origin: true });
-
+const cors = require("cors")({ origin: true });
 
 const rssProxy = async (req,res) => {
     return cors(req,res, async () => {
@@ -28,11 +26,8 @@ const rssProxy = async (req,res) => {
         console.error(error)
         return
     }
-    return res.send(proxyRes.data);
+    res.send(proxyRes.data);
 })
-}
-
-rssProxy("https://jp.techcrunch.com/feed/")
+};
 
 module.exports = rssProxy;
-// export { rssProxy };

@@ -20,7 +20,7 @@
 
 
 <script>
-import firebase from 'firebase';
+// import firebase from 'firebase';
 import RssParser from 'rss-parser'
 const rssParser = new RssParser();
 const host = 'https://us-central1-rss-synthesis.cloudfunctions.net';
@@ -42,22 +42,12 @@ export default {
     },
 
     methods: {
-        RssToJson : async function(url){
-            const fetchRSS = firebase.functions().httpsCallable('fetchRSS');
-            fetchRSS({rss : url}).then((res)=>{
-                console.log(res)
-            })
-        },
-        SpeakVoice : async function(url){
-            const feed = await this.RssToJson(url);
+        fetchFeed : async function(url){
+            const feed = await rssParser.parseURL(`${host}/RssProxy?url=${url}`);
             feed.items.map(function(item){
                 const uttr = new SpeechSynthesisUtterance(item.title);
                 speechSynthesis.speak(uttr);
             })
-        },
-        fetchFeed : async function(url){
-            const feed = await rssParser.parseURL(`${host}/RssProxy?url=${url}`);
-            speechSynthesis.speak(feed);
         },
         StopVoice : function(){
             speechSynthesis.cancel();
