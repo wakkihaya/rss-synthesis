@@ -1,33 +1,20 @@
 <template>
     <div class="container">
-        <div class="feed" v-for="feed in feeds" v-bind:key="feed.id">
-            <div class="feed--title">
-                {{feed.title}}
-            </div>
-            <div class="feed--play-button"
-                 v-on:click="fetchFeed(feed.rss)"
-            >
-                再生
-            </div>
-            <div class="feed--stop-button"
-                 v-on:click="StopVoice"
-            >
-                停止
-            </div>
+        <div v-for="feed in feeds" v-bind:key="feed.id">
+            <Button :feed="feed"></Button>
         </div>
     </div>
 </template>
 
 
 <script>
-// import firebase from 'firebase';
-import RssParser from 'rss-parser'
-const rssParser = new RssParser();
-const host = 'https://us-central1-rss-synthesis.cloudfunctions.net';
-
+import Button from './button.vue';
 
 export default {
     name: "index",
+    components : {
+      Button
+    },
     data: function(){
         return{
             header: {
@@ -37,22 +24,10 @@ export default {
             feeds: [
                 {title: 'techcrunch', rss: 'https://jp.techcrunch.com/feed/'},
                 {title: '東京都', rss: 'https://www.metro.tokyo.lg.jp/rss/index.rdf'}
-            ]
+            ],
         }
     },
 
-    methods: {
-        fetchFeed : async function(url){
-            const feed = await rssParser.parseURL(`${host}/RssProxy?url=${url}`);
-            feed.items.map(function(item){
-                const uttr = new SpeechSynthesisUtterance(item.title);
-                speechSynthesis.speak(uttr);
-            })
-        },
-        StopVoice : function(){
-            speechSynthesis.cancel();
-        }
-    }
 }
 
 
@@ -63,36 +38,6 @@ export default {
 .container{
     margin: 5% 10% 0 10%;
     border: solid 3px black;
-}
-
-.feed{
-    display: flex;
-    padding: 1rem;
-    border-bottom: solid 1px gray;
-    &--title{
-        flex-basis: 60%;
-        text-align: center;
-        font-size: 2rem;
-    }
-    &--play-button{
-        flex-basis: 20%;
-        background: #e14500;
-        border-radius: 5px;
-        color: white;
-        font-size: 1.5rem;
-        text-align: center;
-        cursor: pointer;
-    }
-    &--stop-button{
-        flex-basis: 20%;
-        background: gray;
-        border-radius: 5px;
-        color: white;
-        font-size: 1.5rem;
-        text-align: center;
-        cursor: pointer;
-    }
-
 }
 
 </style>
