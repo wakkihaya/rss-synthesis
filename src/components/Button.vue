@@ -36,7 +36,7 @@ const rssParser = new RssParser();
 const host = 'https://us-central1-rss-synthesis.cloudfunctions.net';
 
 export default {
-    name: "button",
+    name: "Button",
     props: ['feed'],
     data: function () {
         return {

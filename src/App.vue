@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import Home from './components/index.vue'
+import Home from './components/Index.vue'
 import Header from './components/Header.vue'
 
 export default {
