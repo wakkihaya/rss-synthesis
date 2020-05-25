@@ -37,7 +37,9 @@
                 一時停止した記事のタイトル
             </div>
             <div class="feed--paused-article-item">
-                {{item}}
+                <a :href="item_link">
+                    {{item_content}}
+                </a>
             </div>
         </div>
     </div>
@@ -58,7 +60,9 @@ export default {
         return {
             contents: [],
             content_title: [],
-            item: "",
+            content_link: [],
+            item_content: "",
+            item_link: "",
             isPlayOn: true,
             isPauseOn: false,
             isResumeOn: false,
@@ -72,6 +76,7 @@ export default {
             feed.items.map(function (item) {
                 if (item.contentSnippet !== undefined) {
                     self.content_title.push(item.title);
+                    self.content_link.push(item.link);
                     self.contents.push('タイトルはこちら。 ' + item.title + '。概要はこちら。　' + item.contentSnippet);
                 } else {
                     self.contents.push('タイトルはこちら。 ' + item.title + '。詳しくはサイトをチェック。');
@@ -89,7 +94,8 @@ export default {
             for (var i = 0; i < this.contents.length; i++) {
                 speechSynthesis.cancel();
                 uttr.text = this.contents[i];
-                this.item = this.content_title[i];
+                this.item_content = this.content_title[i];
+                this.item_link = this.content_link[i];
                 await new Promise(function (resolve) {
                     uttr.onend = resolve;
                     speechSynthesis.speak(uttr);
